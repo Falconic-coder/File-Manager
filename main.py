@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import  ttk, messagebox
 import os
 import shutil
 from send2trash import send2trash
@@ -8,7 +8,7 @@ import re
 
 class Main:
     
-    current_directory = f"C:\\Users"
+    current_directory = f"C:\\\\Users"
     path = ""
     copied_from = None
     copy_to = None
@@ -26,21 +26,26 @@ class Main:
         paste_img = tk.PhotoImage(file="resized_images/paste.png")
         new_folder_img = tk.PhotoImage(file="resized_images/add-folder.png")
         delete_img = tk.PhotoImage(file="resized_images/trash.png")
+        lvlUp_Img = tk.PhotoImage(file="resized_images/lvl-up.png")
 
         self.copy_btn = tk.Button(self.frame, image=copy_img, text="Copy", compound="top", borderwidth=0, bg="lightgrey", command=self.on_click_copy_btn, state=tk.DISABLED)
         self.paste_btn = tk.Button(self.frame, image=paste_img, text="Paste", compound="top", borderwidth=0, bg="lightgrey", command=self.on_click_paste_btn, state=tk.DISABLED)
         self.new_folder_btn = tk.Button(self.frame, image=new_folder_img, text="New Folder", compound="top", borderwidth=0, bg="lightgrey", command=self.on_click_new_folder_btn)
         self.delete_btn = tk.Button(self.frame, image=delete_img, text="Delete", compound="top", borderwidth=0, bg="lightgrey", command=self.on_click_delete_btn, state=tk.DISABLED)
+        self.one_up_btn = tk.Button(self.frame, image=lvlUp_Img, text="Up", compound="top", borderwidth=0, bg="lightgrey", command=self.one_lvl_up)
 
         self.copy_btn.image = copy_img
         self.paste_btn.image = paste_img
         self.new_folder_btn.image = new_folder_img
         self.delete_btn.image = delete_img
+        self.one_up_btn.image = lvlUp_Img
+        
 
-        self.copy_btn.grid(row=0, column=0, padx=10, pady=5)
-        self.paste_btn.grid(row=0, column=1, padx=10, pady=5)
+        self.copy_btn.grid(row=0, column=1, padx=10, pady=5)
+        self.paste_btn.grid(row=0, column=2, padx=10, pady=5)
         self.new_folder_btn.grid(row=0, column=3, padx=10, pady=5)
         self.delete_btn.grid(row=0, column=4, padx=10, pady=5)
+        self.one_up_btn.grid(row=0, column=0, padx=10, pady=5)
 
         self.frame.pack(fill=tk.BOTH)
 
@@ -238,10 +243,27 @@ class Main:
         self.current_dir_ent.delete(0, tk.END)
         self.current_dir_ent.insert(0, self.path)
 
+
+    def one_lvl_up(self):
+        currPath = self.current_directory
+        if(currPath == "C:\\"):
+            return
+        sliced = currPath.split("\\")
+        removedElm = sliced.pop()
+        if removedElm in currPath:
+            newPath = currPath.replace(removedElm, "")[:-1]
+            self.current_directory = newPath
+            self.current_dir_ent.delete(0, tk.END)
+            self.current_dir_ent.insert(0, newPath)
+            self.main_frame.destroy()
+            self.main()
+            self.path = newPath
+
+
 if __name__ == "__main__":
     win = tk.Tk()
     win.title("File Manager")
-    win.geometry("700x800")
-    win.resizable(width=False, height=False)
+    win.geometry("700x600")
+    # win.resizable(width=False, height=False)
     Main(win)
     win.mainloop()
