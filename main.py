@@ -264,6 +264,6 @@ if __name__ == "__main__":
     win = tk.Tk()
     win.title("File Manager")
     win.geometry("700x600")
-    # win.resizable(width=False, height=False)
+    win.resizable(width=False, height=False)
     Main(win)
     win.mainloop()
